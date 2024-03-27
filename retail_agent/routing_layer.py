@@ -8,21 +8,21 @@ encoder = HuggingFaceEncoder()
 llm = OllamaLLM(llm_name="gemma:2b")
 
 chitchat = Route(
-        name="chitchat",
-        utterances=[
-            "Hi",
-            "How are you?",
-            "What's up?",
-            "Hello",
-            "Heyaa",
-            "Good morning",
-            "Good afternoon",
-            "Hey there",
-            "How's it going?",
-            "What's new?",
-            "Long time no see"
-        ]
-    )
+    name="chitchat",
+    utterances=[
+        "Hi",
+        "How are you?",
+        "What's up?",
+        "Hello",
+        "Heyaa",
+        "Good morning",
+        "Good afternoon",
+        "Hey there",
+        "How's it going?",
+        "What's new?",
+        "Long time no see"
+    ]
+)
 
 product_purchase = Route(
     name="product_purchase",

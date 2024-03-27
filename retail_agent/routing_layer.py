@@ -27,6 +27,16 @@ chitchat = Route(
 product_purchase = Route(
     name="product_purchase",
     utterances=[
+        "I want to buy a phone",
+        "Order a box of cereals for me",
+        "Buy me a Tshirt",
+        "which earphones should I buy",
+        "What is the price of a ...",
+        "I'm interested in purchasing a smartwatch.",
+        "Where can I buy a good bookshelf?",
+        "I need to buy a new backpack for school.",
+        "Could you find me a good deal on a blender?",
+        "Can you get me a pair of sneakers?"
     ]
 )
 
@@ -56,11 +66,19 @@ price_tracking = Route(
 order_tracking = Route(
     name="order_tracking",
     utterances=[
-        ""
+        "How can I track my order?",
+        "Where has my order reached?",
+        "When will I get my Shirt that i ordered yesterday?",
+        "How long do i have to wait for my perfume?",
+        "What is the status of my order",
+        "Give me the tracking details of my order",
+        "Where's my delivery at right now?",
+        "I ordered a book yesterday, when can I expect it?",
+        "What's the expected delivery date for the watch I bought?",
+        "I'm curious about the shipping status of my electronics order."
     ]
 )
 
 routes = [chitchat, product_purchase, scheduled_purchase, price_tracking, order_tracking]
 
 rl = RouteLayer(encoder=encoder, routes=routes, llm=llm)
-

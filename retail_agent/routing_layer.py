@@ -59,7 +59,19 @@ scheduled_purchase = Route(
 price_tracking = Route(
     name="price_tracking",
     utterances=[
-        ""
+        "Track the price of [product]",
+        "Notify me when the price of [product] drops",
+        "Alert me if there's a price reduction for [product]",
+        "Let me know when the price of [product] decreases",
+        "Keep me updated on any price cuts for [product]",
+        "Inform me of any discounts on [product]",
+        "Notify me of any price reductions for [product]",
+        "I'm interested in receiving updates about price reductions for [product]",
+        "Please alert me if [product] becomes cheaper",
+        "Notify me of price changes for [product]",
+        "Keep me informed about price drops for [product]",
+        "Inform me when the price of [product] decreases",
+        "Please let me know if there's a price decrease for [product]"
     ]
 )
 

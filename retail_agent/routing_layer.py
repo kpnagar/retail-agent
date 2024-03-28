@@ -5,7 +5,7 @@ from semantic_router import RouteLayer
 from semantic_router.utils.function_call import get_schema
 import tools as t
 
-encoder = HuggingFaceEncoder()
+encoder = HuggingFaceEncoder(name="WhereIsAI/UAE-Large-V1")
 
 llm = OllamaLLM(llm_name="mistral")
 

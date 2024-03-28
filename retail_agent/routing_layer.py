@@ -5,9 +5,9 @@ from semantic_router import RouteLayer
 from semantic_router.utils.function_call import get_schema
 import tools as t
 
-encoder = HuggingFaceEncoder(name="WhereIsAI/UAE-Large-V1")
+encoder = HuggingFaceEncoder()
 
-llm = OllamaLLM(llm_name="gemma:2b")
+llm = OllamaLLM(llm_name="mistral")
 
 chitchat = Route(
     name="chitchat",
@@ -40,7 +40,8 @@ product_purchase = Route(
         "I need to buy a new backpack for school.",
         "Could you find me a good deal on a blender?",
         "Can you get me a pair of sneakers?"
-    ]
+    ],
+    function_schema=get_schema(t.product_purchase)
 )
 
 scheduled_purchase = Route(

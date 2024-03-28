@@ -63,7 +63,7 @@ def schedule_purchase(item: str, datetime_to_schedule: datetime) -> bool:
     # check item to be scheduled for purchase
     # datetime to purchase
     # run a scheduler to call the purchase function
-    order_purchased = schedule.once(datetime(year=2022, month=2, day=15, minute=45), purchase_order)
+    order_purchased = schedule.once(datetime(year=2022, month=2, day=15, minute=45), purchase_order, item_id)
     if not order_purchased:
         return False
     return True

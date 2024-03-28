@@ -4,6 +4,9 @@ import json
 from schemas import Product, Order
 from store import orders
 from datetime import datetime
+from scheduler import Scheduler
+
+schedule = Scheduler()
 
 
 def chitchat(user_query: str) -> str:
@@ -44,3 +47,23 @@ def product_purchase(item: str) -> str:
                 return f"Your order for {product.title} has been placed. OrderID for your purchase is: {order.id}"
     else:
         print("Error:", response.status_code)
+
+
+def schedule_purchase(item: str, datetime_to_schedule: datetime) -> bool:
+    """
+    Schedule a purchase of an item at a given datetime.
+
+    Args:
+    - item (str): The name or identifier of the item to be purchased.
+    - datetime_to_schedule (datetime): The datetime object indicating when the purchase should be made.
+
+    Returns:
+    - bool: True if the purchase was successfully scheduled, False otherwise.
+    """
+    # check item to be scheduled for purchase
+    # datetime to purchase
+    # run a scheduler to call the purchase function
+    order_purchased = schedule.once(datetime(year=2022, month=2, day=15, minute=45), purchase_order)
+    if not order_purchased:
+        return False
+    return True

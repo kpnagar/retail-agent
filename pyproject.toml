@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
 semantic-router = {extras = ["local"], version = "^0.0.29"}
+langchain = "^0.1.13"
+scheduler = "^0.8.5"
 
 
 [build-system]

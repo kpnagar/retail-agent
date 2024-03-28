@@ -68,20 +68,21 @@ def product_purchase(item: str) -> str:
     return place_order(product, datetime.utcnow())
 
 
-def schedule_purchase(item: str, datetime_to_schedule: datetime) -> bool:
+def schedule_purchase(item: str, datetime_to_schedule: str) -> bool:
     """
     Schedule a purchase of an item at a given datetime.
 
     Args:
     - item (str): The name or identifier of the item to be purchased.
-    - datetime_to_schedule (datetime): The datetime object indicating when the purchase should be made.
+    - datetime_to_schedule (str): The date when order is to be scheduled in "YYYY-MM-DD" format.
 
     Returns:
     - bool: True if the purchase was successfully scheduled, False otherwise.
     """
     products = fetch_products_from_api(item)
     product = get_product_of_choice(products)
-    order_purchased = schedule.once(datetime_to_schedule, place_scheduled_order,
+    datetime_object = datetime.strptime(datetime_to_schedule, "%Y-%m-%d")
+    order_purchased = schedule.once(datetime_object, place_scheduled_order,
                                     kwargs={"product": product, "placed_at": datetime_to_schedule})
     if not order_purchased:
         return False

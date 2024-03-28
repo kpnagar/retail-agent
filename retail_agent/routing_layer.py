@@ -4,6 +4,7 @@ from semantic_router.llms.ollama import OllamaLLM
 from semantic_router import RouteLayer
 from semantic_router.utils.function_call import get_schema
 import tools as t
+import datetime
 
 encoder = HuggingFaceEncoder(name="WhereIsAI/UAE-Large-V1")
 
@@ -99,3 +100,10 @@ order_tracking = Route(
 routes = [chitchat, product_purchase, scheduled_purchase, price_tracking, order_tracking]
 
 rl = RouteLayer(encoder=encoder, routes=routes, llm=llm)
+
+res = rl("I want to purchase a sweatshirt next week"+f"current date is {datetime.date.today()}")
+print(res)
+
+if res.name == 'scheduled_purchase':
+    purchase = t.schedule_purchase(**res.function_call)
+    print(purchase)

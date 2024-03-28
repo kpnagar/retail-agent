@@ -57,7 +57,8 @@ scheduled_purchase = Route(
         "Arrange a purchase for [specific date/time]",
         "Put in an order for [product] on [specific date/time]",
         "Schedule buying [product] for [specific date/time]"
-    ]
+    ],
+    function_schema=get_schema(t.schedule_purchase)
 )
 
 price_tracking = Route(

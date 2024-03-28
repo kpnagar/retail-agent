@@ -2,8 +2,10 @@ from semantic_router import Route
 from semantic_router.encoders import HuggingFaceEncoder
 from semantic_router.llms.ollama import OllamaLLM
 from semantic_router import RouteLayer
+from semantic_router.utils.function_call import get_schema
+import tools as t
 
-encoder = HuggingFaceEncoder()
+encoder = HuggingFaceEncoder(name="WhereIsAI/UAE-Large-V1")
 
 llm = OllamaLLM(llm_name="gemma:2b")
 
@@ -21,7 +23,8 @@ chitchat = Route(
         "How's it going?",
         "What's new?",
         "Long time no see"
-    ]
+    ],
+    function_schema=get_schema(t.chitchat)
 )
 
 product_purchase = Route(

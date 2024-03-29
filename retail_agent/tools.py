@@ -87,3 +87,20 @@ def schedule_purchase(item: str, datetime_to_schedule: str) -> bool:
     if not order_purchased:
         return False
     return True
+
+
+def price_tracking(item: str) -> str:
+    """
+    Track a product price and notify user for price drop
+
+    Args:
+    - item (str): The name or identifier of the item to be purchased.
+
+    Returns:
+    - bool: True if the purchase was successfully added to card, False otherwise.
+    """
+    products = fetch_products_from_api(item)
+    product = get_product_of_choice(products)
+    return f"Your product {product.title} added in cart for price tracking"
+
+

@@ -78,7 +78,8 @@ price_tracking = Route(
         "Keep me informed about price drops for [product]",
         "Inform me when the price of [product] decreases",
         "Please let me know if there's a price decrease for [product]"
-    ]
+    ],
+    function_schema=get_schema(t.price_tracking)
 )
 
 order_tracking = Route(
@@ -101,9 +102,9 @@ routes = [chitchat, product_purchase, scheduled_purchase, price_tracking, order_
 
 rl = RouteLayer(encoder=encoder, routes=routes, llm=llm)
 
-res = rl("I want to purchase a sweatshirt next week"+f"current date is {datetime.date.today()}")
+res = rl("I want track price for sweatshirt ")
 print(res)
 
-if res.name == 'scheduled_purchase':
-    purchase = t.schedule_purchase(**res.function_call)
+if res.name == 'price_tracking':
+    purchase = t.price_tracking(**res.function_call)
     print(purchase)

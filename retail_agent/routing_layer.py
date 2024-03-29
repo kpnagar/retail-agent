@@ -1,14 +1,11 @@
 from semantic_router import Route
 from semantic_router.encoders import HuggingFaceEncoder
-from semantic_router.llms.ollama import OllamaLLM
 from semantic_router import RouteLayer
 from semantic_router.utils.function_call import get_schema
 import tools as t
 import datetime
 
 encoder = HuggingFaceEncoder(name="WhereIsAI/UAE-Large-V1")
-
-llm = OllamaLLM(llm_name="mistral")
 
 chitchat = Route(
     name="chitchat",
@@ -95,16 +92,10 @@ order_tracking = Route(
         "I ordered a book yesterday, when can I expect it?",
         "What's the expected delivery date for the watch I bought?",
         "I'm curious about the shipping status of my electronics order."
-    ]
+    ],
+    function_schema=get_schema(t.retrieve_order_details)
 )
 
 routes = [chitchat, product_purchase, scheduled_purchase, price_tracking, order_tracking]
 
-rl = RouteLayer(encoder=encoder, routes=routes, llm=llm)
-
-res = rl("I want track price for sweatshirt ")
-print(res)
-
-if res.name == 'price_tracking':
-    purchase = t.price_tracking(**res.function_call)
-    print(purchase)
+rl = RouteLayer(encoder=encoder, routes=routes, llm=t.llm)

@@ -1,13 +1,16 @@
 from typing import List
 
-from semantic_router.utils import llm
 import requests
 import json
 from schemas import Product, Order
 from store import orders
 from datetime import datetime
 from scheduler import Scheduler
+from sentence_transformers import SentenceTransformer, util
+from semantic_router.llms.ollama import OllamaLLM
+from semantic_router.schema import Message
 
+llm = OllamaLLM(llm_name="mistral")
 schedule = Scheduler()
 
 
@@ -54,7 +57,7 @@ def chitchat(user_query: str) -> str:
     :type user_query: str
     :return: Respectful response of user's query in string format
     """
-    return llm.llm(user_query)
+    return llm([Message(role="user", content=user_query)])
 
 
 def product_purchase(item: str) -> str:
@@ -104,3 +107,27 @@ def price_tracking(item: str) -> str:
     return f"Your product {product.title} added in cart for price tracking"
 
 
+def retrieve_order_details(user_query: str, product_name: str):
+    """
+    use when user wants to retrieve order details
+
+    :param user_query: user's original query
+    :param product_name: the product whose status the user wants to retrieve
+    :return: status: status of the order
+    """
+    product_list = [{"id": order['id'], "product_name": order["product"]["title"], "status": order["status"]} for order
+                    in orders]
+    model = SentenceTransformer('paraphrase-distilroberta-base-v1')
+
+    product_names = [order["product_name"] for order in product_list]
+    embeddings = model.encode(product_names, convert_to_tensor=True)
+    input_embedding = model.encode(product_name, convert_to_tensor=True)
+    cosine_scores = util.pytorch_cos_sim(input_embedding, embeddings)
+    highest_similarity_index = cosine_scores.argmax().item()
+    order_details = product_list[highest_similarity_index]
+    prompt = f"""Answer the following question based on the given context. Answer in the tone of an helpful assistant.Keep the responses very short in plainstring format, only tell user about the order.
+    ###Context:
+    {order_details}
+    """
+    print(order_details)
+    return llm([Message(role="system", content=prompt), Message(role="user", content=user_query)])

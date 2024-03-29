@@ -45,7 +45,7 @@ def place_scheduled_order(product, placed_at):
 def place_order(product, placed_at):
     order = Order(product=product, total_amount=product.price, order_date=placed_at,
                   status="processing")
-    orders.append(order)
+    orders.append(order.model_dump())
     return f"Your order for {product.title} has been placed. OrderID for your purchase is: {order.id}"
 
 

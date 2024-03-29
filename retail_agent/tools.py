@@ -10,7 +10,7 @@ from sentence_transformers import SentenceTransformer, util
 from semantic_router.llms.ollama import OllamaLLM
 from semantic_router.schema import Message
 
-llm = OllamaLLM(llm_name="mistral")
+llm = OllamaLLM(llm_name="gemma:2b")
 schedule = Scheduler()
 
 
@@ -24,7 +24,7 @@ def fetch_products_from_api(item: str):
         data = response.json()
         products = [Product(**item) for item in data]
         if not products:
-            return "Unable to find the product you're looking for..."
+            return None
         print(f"The following items are available for purchase. \n{data}")
         return products
     else:
@@ -45,7 +45,7 @@ def place_scheduled_order(product, placed_at):
 def place_order(product, placed_at):
     order = Order(product=product, total_amount=product.price, order_date=placed_at,
                   status="processing")
-    orders.append(order)
+    orders.append(order.model_dump())
     return f"Your order for {product.title} has been placed. OrderID for your purchase is: {order.id}"
 
 
@@ -67,6 +67,8 @@ def product_purchase(item: str) -> str:
     :return order_id: ID of the order placed by the user
     """
     products = fetch_products_from_api(item)
+    if not products:
+        return "Unable to find the product you're looking for..."
     product = get_product_of_choice(products)
     return place_order(product, datetime.utcnow())
 
@@ -83,6 +85,8 @@ def schedule_purchase(item: str, datetime_to_schedule: str) -> bool:
     - bool: True if the purchase was successfully scheduled, False otherwise.
     """
     products = fetch_products_from_api(item)
+    if not products:
+        return False
     product = get_product_of_choice(products)
     datetime_object = datetime.strptime(datetime_to_schedule, "%Y-%m-%d")
     order_purchased = schedule.once(datetime_object, place_scheduled_order,
@@ -103,11 +107,13 @@ def price_tracking(item: str) -> str:
     - bool: True if the purchase was successfully added to card, False otherwise.
     """
     products = fetch_products_from_api(item)
+    if not products:
+        return "Unable to find the product you're looking for..."
     product = get_product_of_choice(products)
     return f"Your product {product.title} added in cart for price tracking"
 
 
-def retrieve_order_details(user_query: str, product_name: str):
+def order_tracking(user_query: str, product_name: str):
     """
     use when user wants to retrieve order details
 

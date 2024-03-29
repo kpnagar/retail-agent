@@ -3,9 +3,11 @@ from semantic_router.encoders import HuggingFaceEncoder
 from semantic_router import RouteLayer
 from semantic_router.utils.function_call import get_schema
 import tools as t
-import datetime
+from semantic_router.llms.ollama import OllamaLLM
 
-encoder = HuggingFaceEncoder(name="WhereIsAI/UAE-Large-V1")
+encoder = HuggingFaceEncoder(name="sentence-transformers/all-MiniLM-L6-v2")
+
+llm = OllamaLLM(llm_name="mistral")
 
 chitchat = Route(
     name="chitchat",
@@ -93,9 +95,9 @@ order_tracking = Route(
         "What's the expected delivery date for the watch I bought?",
         "I'm curious about the shipping status of my electronics order."
     ],
-    function_schema=get_schema(t.retrieve_order_details)
+    function_schema=get_schema(t.order_tracking)
 )
 
 routes = [chitchat, product_purchase, scheduled_purchase, price_tracking, order_tracking]
 
-rl = RouteLayer(encoder=encoder, routes=routes, llm=t.llm)
+rl = RouteLayer(encoder=encoder, routes=routes, llm=llm)

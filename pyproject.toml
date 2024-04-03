@@ -11,6 +11,9 @@ semantic-router = {extras = ["local"], version = "^0.0.29"}
 langchain = "^0.1.13"
 scheduler = "^0.8.5"
 sentence-transformers = "^2.6.1"
+pyttsx3 = "^2.90"
+speechrecognition = "^3.10.3"
+openai-whisper = "^20231117"
 
 [build-system]
 requires = ["poetry-core"]

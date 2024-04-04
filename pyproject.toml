@@ -16,7 +16,7 @@ speechrecognition = "^3.10.3"
 openai-whisper = "^20231117"
 soundfile = "^0.12.1"
 pyaudio = "^0.2.14"
-keyboard = "^0.13.5"
+pynput = "^1.7.6"
 
 [build-system]
 requires = ["poetry-core"]

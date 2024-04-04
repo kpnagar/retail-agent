@@ -1,30 +1,11 @@
-import keyboard
 import speech_recognition
 import tools as t
 from routing_layer import rl
+from pynput import keyboard as kb
 
 
-def main():
-    recognizer = speech_recognition.Recognizer()
-    print("Agent: Hello, how may I help you with your shopping today?")
-    recording_started = False
-
-    while True:
-        try:
-            event = keyboard.read_event(suppress=True)
-            if event:
-                if event.event_type == keyboard.KEY_DOWN:
-                    if not recording_started:
-                        recording_started = True
-                        message = listen_for_input(recognizer)
-                        process_input(message)
-                elif event.event_type == keyboard.KEY_UP and recording_started:
-                    recording_started = False
-        except Exception as e:
-            recognizer = speech_recognition.Recognizer()
-            recording_started = False
-            print(f"An error occurred: {e}")
-            continue
+def on_release(key):
+    pass
 
 
 def listen_for_input(recognizer):
@@ -52,6 +33,27 @@ def get_response(out):
     }
     response_function = response_functions.get(out.name, t.chitchat)
     return response_function(**out.function_call)
+
+
+def main():
+    recording_started = False
+    recognizer = speech_recognition.Recognizer()
+    print("Agent: Hello, how may I help you with your shopping today?")
+
+    recording_started = False
+
+    def on_press(key):
+        nonlocal recording_started
+        if key == kb.Key.space:
+            if not recording_started:
+                recording_started = True
+                message = listen_for_input(recognizer)
+                process_input(message)
+            else:
+                recording_started = False
+
+    with kb.Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
 
 
 if __name__ == "__main__":

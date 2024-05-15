@@ -11,6 +11,13 @@ semantic-router = {extras = ["local"], version = "^0.0.29"}
 langchain = "^0.1.13"
 scheduler = "^0.8.5"
 sentence-transformers = "^2.6.1"
+speechrecognition = "^3.10.3"
+openai-whisper = "^20231117"
+soundfile = "^0.12.1"
+pyaudio = "^0.2.14"
+pynput = "^1.7.6"
+gtts = "^2.5.1"
+pygame = "^2.5.2"
 
 [build-system]
 requires = ["poetry-core"]
